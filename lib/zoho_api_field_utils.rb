@@ -69,8 +69,12 @@ module ZohoApiFieldUtils
   def create_and_add_field_value_pair(field_name, module_name, n, record)
     k = ApiUtils.string_to_symbol(field_name)
     v = n.text == 'null' ? nil : n.text
-    r = record.merge({ k => v })
-    r = r.merge({ :id => v }) if primary_key?(module_name, k)
+    begin
+      r = record.merge({ k => v })
+      r = r.merge({ :id => v }) if primary_key?(module_name, k)
+    rescue
+      r= nil
+    end
     r
   end
 
